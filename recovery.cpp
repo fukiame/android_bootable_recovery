@@ -245,6 +245,7 @@ static void choose_recovery_file(Device* device) {
     } else {
       entries.push_back(Paths::Get().temporary_log_file());
     }
+    break;
   }
 
   entries.push_back("Back");

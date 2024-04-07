@@ -1875,7 +1875,7 @@ void TWPartitionManager::Update_System_Details(void) {
 
 	gui_msg("update_part_details=Updating partition details...");
 	for (iter = Partitions.begin(); iter != Partitions.end(); iter++) {
-		gui_msg((*iter));
+		gui_msg((*iter)->Mount_Point);
 		(*iter)->Update_Size(true);
 		if ((*iter)->Can_Be_Mounted) {
 			if ((*iter)->Mount_Point == Get_Android_Root_Path()) {

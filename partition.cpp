@@ -3041,24 +3041,30 @@ bool TWPartition::Restore_Image(PartitionSettings *part_settings) {
 	return true;
 }
 
+std::string TWPartition::millis() {
+    uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch())
+            .count();
+    return std::to_string(ms);
+}
+
 bool TWPartition::Update_Size(bool Display_Error) {
 	LOGINFO("calling Update_Size\n");
-	auto st = std::chrono::high_resolution_clock::now();
 	bool ret = false, Was_Already_Mounted = false, ro = false;
 
 	LOGINFO("  Find_Actual_Block_Device\n");
 	Find_Actual_Block_Device();
-	LOGINFO("    done, %s\n", long (long (std::chrono::duration_cast<std::chrono::milliseconds>(auto std::chrono::high_resolution_clock::now() - st).count())));
+	LOGINFO("    done, %s\n", millis());
 
 	LOGINFO("  Actual_Block_Device.empty\n");
 	if (Actual_Block_Device.empty())
 		return false;
-	LOGINFO("    done, %s\n", long (long (std::chrono::duration_cast<std::chrono::milliseconds>(auto std::chrono::high_resolution_clock::now() - st).count())));
+	LOGINFO("    done, %s\n", millis());
 
 	LOGINFO("  Mount_Read_Only\n");
 	ro = Mount_Read_Only;
 	Mount_Read_Only = true;
-	LOGINFO("    done, %s\n", long (long (std::chrono::duration_cast<std::chrono::milliseconds>(auto std::chrono::high_resolution_clock::now() - st).count())));
+	LOGINFO("    done, %s\n", millis());
 
 	LOGINFO("  check mount-ablility and encryption status\n");
 	if (!Can_Be_Mounted && !Is_Encrypted) {
@@ -3069,7 +3075,7 @@ bool TWPartition::Update_Size(bool Display_Error) {
 		}
 		goto fail;
 	}
-	LOGINFO("    done, %s\n", long (long (std::chrono::duration_cast<std::chrono::milliseconds>(auto std::chrono::high_resolution_clock::now() - st).count())));
+	LOGINFO("    done, %s\n", millis());
 
 	Was_Already_Mounted = Is_Mounted();
 
@@ -3080,7 +3086,7 @@ bool TWPartition::Update_Size(bool Display_Error) {
 	} else if (!Mount(Display_Error))
 		goto fail;
 
-	LOGINFO("    done, %s\n", long (long (std::chrono::duration_cast<std::chrono::milliseconds>(auto std::chrono::high_resolution_clock::now() - st).count())));
+	LOGINFO("    done, %s\n", millis());
 
 	LOGINFO("  get size via statfs\n");
 	ret = Get_Size_Via_statfs(Display_Error);
@@ -3092,7 +3098,7 @@ bool TWPartition::Update_Size(bool Display_Error) {
 			goto fail;
 		}
 	}
-	LOGINFO("    done, %s\n", long (long (std::chrono::duration_cast<std::chrono::milliseconds>(auto std::chrono::high_resolution_clock::now() - st).count())));
+	LOGINFO("    done, %s\n", millis());
 
 	if (Has_Data_Media) {
 		LOGINFO("  Has_Data_Media\n");
@@ -3102,7 +3108,7 @@ bool TWPartition::Update_Size(bool Display_Error) {
 			int bak = (int)(Used / 1048576LLU);
 			int fre = (int)(Free / 1048576LLU);
 			LOGINFO("Data backup size is %iMB, free: %iMB.\n", bak, fre);
-			LOGINFO("    done, %s\n", long (long (std::chrono::duration_cast<std::chrono::milliseconds>(auto std::chrono::high_resolution_clock::now() - st).count())));
+			LOGINFO("    done, %s\n", millis());
 		} else {
 			if (!Was_Already_Mounted)
 				UnMount(false);
@@ -3121,11 +3127,11 @@ bool TWPartition::Update_Size(bool Display_Error) {
 		UnMount(false);
 success:
 	Mount_Read_Only = ro;
-	LOGINFO("done, success, %s\n", long (long (std::chrono::duration_cast<std::chrono::milliseconds>(auto std::chrono::high_resolution_clock::now() - st).count())));
+	LOGINFO("done, success, %s\n", millis());
 	return true;
 fail:
 	Mount_Read_Only = ro;
-	LOGINFO("done, fail, %s\n", long (long (std::chrono::duration_cast<std::chrono::milliseconds>(auto std::chrono::high_resolution_clock::now() - st).count())));
+	LOGINFO("done, fail, %s\n", millis());
 	return false;
 }
 

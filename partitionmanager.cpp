@@ -1876,7 +1876,7 @@ void TWPartitionManager::Update_System_Details(void) {
 	gui_msg("update_part_details=Updating partition details...");
 	for (iter = Partitions.begin(); iter != Partitions.end(); iter++) {
 		std::string bruh = (*iter)->Mount_Point;
-		char* mp = bruh.c_str();
+		const char* mp = bruh.c_str();
 		gui_msg(mp);
 		(*iter)->Update_Size(true);
 		if ((*iter)->Can_Be_Mounted) {

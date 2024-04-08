@@ -3054,17 +3054,17 @@ bool TWPartition::Update_Size(bool Display_Error) {
 
 	LOGINFO("  Find_Actual_Block_Device\n");
 	Find_Actual_Block_Device();
-	LOGINFO("    done, %s\n", c_str(millis()));
+	LOGINFO("    done, %s\n", std::to_string(millis()));
 
 	LOGINFO("  Actual_Block_Device.empty\n");
 	if (Actual_Block_Device.empty())
 		return false;
-	LOGINFO("    done, %s\n", c_str(millis()));
+	LOGINFO("    done, %s\n", std::to_string(millis()));
 
 	LOGINFO("  Mount_Read_Only\n");
 	ro = Mount_Read_Only;
 	Mount_Read_Only = true;
-	LOGINFO("    done, %s\n", c_str(millis()));
+	LOGINFO("    done, %s\n", std::to_string(millis()));
 
 	LOGINFO("  check mount-ablility and encryption status\n");
 	if (!Can_Be_Mounted && !Is_Encrypted) {
@@ -3075,7 +3075,7 @@ bool TWPartition::Update_Size(bool Display_Error) {
 		}
 		goto fail;
 	}
-	LOGINFO("    done, %s\n", c_str(millis()));
+	LOGINFO("    done, %s\n", std::to_string(millis()));
 
 	Was_Already_Mounted = Is_Mounted();
 
@@ -3086,7 +3086,7 @@ bool TWPartition::Update_Size(bool Display_Error) {
 	} else if (!Mount(Display_Error))
 		goto fail;
 
-	LOGINFO("    done, %s\n", c_str(millis()));
+	LOGINFO("    done, %s\n", std::to_string(millis()));
 
 	LOGINFO("  get size via statfs\n");
 	ret = Get_Size_Via_statfs(Display_Error);
@@ -3098,7 +3098,7 @@ bool TWPartition::Update_Size(bool Display_Error) {
 			goto fail;
 		}
 	}
-	LOGINFO("    done, %s\n", c_str(millis()));
+	LOGINFO("    done, %s\n", std::to_string(millis()));
 
 	if (Has_Data_Media) {
 		LOGINFO("  Has_Data_Media\n");
@@ -3108,7 +3108,7 @@ bool TWPartition::Update_Size(bool Display_Error) {
 			int bak = (int)(Used / 1048576LLU);
 			int fre = (int)(Free / 1048576LLU);
 			LOGINFO("Data backup size is %iMB, free: %iMB.\n", bak, fre);
-			LOGINFO("    done, %s\n", c_str(millis()));
+			LOGINFO("    done, %s\n", std::to_string(millis()));
 		} else {
 			if (!Was_Already_Mounted)
 				UnMount(false);
@@ -3127,11 +3127,11 @@ bool TWPartition::Update_Size(bool Display_Error) {
 		UnMount(false);
 success:
 	Mount_Read_Only = ro;
-	LOGINFO("done, success, %s\n", c_str(millis()));
+	LOGINFO("done, success, %s\n", std::to_string(millis()));
 	return true;
 fail:
 	Mount_Read_Only = ro;
-	LOGINFO("done, fail, %s\n", c_str(millis()));
+	LOGINFO("done, fail, %s\n", std::to_string(millis()));
 	return false;
 }
 

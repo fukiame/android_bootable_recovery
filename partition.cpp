@@ -3049,7 +3049,6 @@ uint64_t TWPartition::millis() {
 }
 
 bool TWPartition::Update_Size(bool Display_Error) {
-	LOGINFO("calling Update_Size\n");
 	bool ret = false, Was_Already_Mounted = false, ro = false;
 
 	Find_Actual_Block_Device();
@@ -3078,18 +3077,16 @@ bool TWPartition::Update_Size(bool Display_Error) {
 		goto fail;
 
 
-	LOGINFO("  get size via statfs\n");
 	ret = Get_Size_Via_statfs(Display_Error);
 	if (!ret || Size == 0) {
 		if (!Get_Size_Via_df(Display_Error)) {
-			LOGINFO("    get size via df\n");
 			if (!Was_Already_Mounted)
 				UnMount(false);
 			goto fail;
 		}
 	}
-	LOGINFO("    done, %s\n", (std::to_string(millis())).c_str());
 
+	LOGINFO("Update_Size data part, currently at %s\n", (std::to_string(millis())).c_str());
 	if (Has_Data_Media) {
 		if (Mount(Display_Error)) {
 			Used = backup_exclusions.Get_Folder_Size(Mount_Point);

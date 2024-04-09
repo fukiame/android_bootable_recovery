@@ -3041,7 +3041,7 @@ bool TWPartition::Restore_Image(PartitionSettings *part_settings) {
 	return true;
 }
 
-uint64_t millis() {
+uint64_t TWPartition::millis() {
     uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::high_resolution_clock::now().time_since_epoch())
             .count();

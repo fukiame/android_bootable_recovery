@@ -3052,21 +3052,14 @@ bool TWPartition::Update_Size(bool Display_Error) {
 	LOGINFO("calling Update_Size\n");
 	bool ret = false, Was_Already_Mounted = false, ro = false;
 
-	LOGINFO("  Find_Actual_Block_Device\n");
 	Find_Actual_Block_Device();
-	LOGINFO("    done, %s\n", (std::to_string(millis())).c_str());
 
-	LOGINFO("  Actual_Block_Device.empty\n");
 	if (Actual_Block_Device.empty())
 		return false;
-	LOGINFO("    done, %s\n", (std::to_string(millis())).c_str());
 
-	LOGINFO("  Mount_Read_Only\n");
 	ro = Mount_Read_Only;
 	Mount_Read_Only = true;
-	LOGINFO("    done, %s\n", (std::to_string(millis())).c_str());
 
-	LOGINFO("  check mount-ablility and encryption status\n");
 	if (!Can_Be_Mounted && !Is_Encrypted) {
 		if (TWFunc::Path_Exists(Actual_Block_Device) && Find_Partition_Size()) {
 			Used = Size;
@@ -3075,18 +3068,15 @@ bool TWPartition::Update_Size(bool Display_Error) {
 		}
 		goto fail;
 	}
-	LOGINFO("    done, %s\n", (std::to_string(millis())).c_str());
 
 	Was_Already_Mounted = Is_Mounted();
 
-	LOGINFO("  rem\n");
 	if (Removable || Is_Encrypted) {
 		if (!Mount(false))
 			goto success;
 	} else if (!Mount(Display_Error))
 		goto fail;
 
-	LOGINFO("    done, %s\n", (std::to_string(millis())).c_str());
 
 	LOGINFO("  get size via statfs\n");
 	ret = Get_Size_Via_statfs(Display_Error);
@@ -3101,7 +3091,6 @@ bool TWPartition::Update_Size(bool Display_Error) {
 	LOGINFO("    done, %s\n", (std::to_string(millis())).c_str());
 
 	if (Has_Data_Media) {
-		LOGINFO("  Has_Data_Media\n");
 		if (Mount(Display_Error)) {
 			Used = backup_exclusions.Get_Folder_Size(Mount_Point);
 			Backup_Size = Used;

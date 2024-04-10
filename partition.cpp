@@ -3092,8 +3092,12 @@ bool TWPartition::Update_Size(bool Display_Error) {
 		}
 	} else if (Has_Android_Secure) {
 		if (Mount(Display_Error))
+#ifndef TW_SKIP_GET_FOLDER_SIZE
 			Backup_Size = backup_exclusions.Get_Folder_Size(Backup_Path);
 		else {
+#else
+		if (!Mount(Display_Error)) {
+#endif
 			if (!Was_Already_Mounted)
 				UnMount(false);
 			goto fail;

@@ -1242,10 +1242,13 @@ int TWPartitionManager::Run_Backup(bool adbbackup) {
 	int total_time = (int) difftime(total_stop, total_start);
 
 	uint64_t actual_backup_size;
+
+#ifndef TW_SKIP_GET_FOLDER_SIZE
 	if (!adbbackup) {
 		TWExclude twe;
 		actual_backup_size = twe.Get_Folder_Size(part_settings.Backup_Folder);
 	} else
+#endif
 		actual_backup_size = part_settings.file_bytes + part_settings.img_bytes;
 	actual_backup_size /= (1024LLU * 1024LLU);
 

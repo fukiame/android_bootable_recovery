@@ -76,7 +76,7 @@
 		<variable name="tw_hide_kb" value="0"/>
 		<variable name="screen_width" value="1080"/>
 		<variable name="screen_height" value="1920"/>
-		<variable name="status_height" value="72"/>
+		<variable name="status_height" value="80"/>
 		<variable name="header_height" value="256"/>
 		<variable name="navbar_height" value="130"/>
 		<variable name="content_width" value="1008"/>
@@ -259,7 +259,7 @@
 				<action function="key">home</action>
 			</button>
 
-			<fill color="#00000030">
+			<fill color="#000000">
 				<condition var1="tw_simulate_actions" var2="0"/>
 				<placement x="0" y="0" w="%screen_width%" h="%status_height%"/>
 			</fill>

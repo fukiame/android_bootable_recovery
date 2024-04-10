@@ -58,6 +58,13 @@ void TWExclude::add_absolute_dir(const string& dir) {
 	absolutedir.push_back(TWFunc::Remove_Trailing_Slashes(dir));
 }
 
+uint64_t TWExclude::mill() {
+    uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch())
+            .count();
+    return ms; 
+}
+
 uint64_t TWExclude::Get_Folder_Size(const string& Path) {
 	DIR* d;
 	struct dirent* de;
@@ -65,27 +72,34 @@ uint64_t TWExclude::Get_Folder_Size(const string& Path) {
 	uint64_t dusize = 0;
 	string FullPath;
 
+	LOGINFO("   Get_Folder_Size start, %s, %s\n", Path.c_str(), (std::to_string(mill())).c_str());
 	d = opendir(Path.c_str());
 	if (d == NULL) {
 		gui_msg(Msg(msg::kError, "error_opening_strerr=Error opening: '{1}' ({2})")(Path)(strerror(errno)));
 		return 0;
 	}
+	LOGINFO("    d Null, %s\n", (std::to_string(mill())).c_str());
 
 	while ((de = readdir(d)) != NULL) {
 		FullPath = Path + "/";
 		FullPath += de->d_name;
+		LOGINFO("     readdir, %s, %s\n", FullPath.c_str(), (std::to_string(mill())).c_str());
 		if (lstat(FullPath.c_str(), &st)) {
 			gui_msg(Msg(msg::kError, "error_opening_strerr=Error opening: '{1}' ({2})")(FullPath)(strerror(errno)));
 			LOGINFO("Real error: Unable to stat '%s'\n", FullPath.c_str());
 			continue;
 		}
+		LOGINFO("     lstat, %s\n", (std::to_string(mill())).c_str());
 		if ((st.st_mode & S_IFDIR) && !check_skip_dirs(FullPath) && de->d_type != DT_SOCK) {
 			dusize += Get_Folder_Size(FullPath);
+		LOGINFO("      IFDIR, %s\n", (std::to_string(mill())).c_str());
 		} else if (st.st_mode & S_IFREG || st.st_mode & S_IFLNK) {
 			dusize += (uint64_t)(st.st_size);
 		}
+		LOGINFO("       IFREG, %s\n", (std::to_string(mill())).c_str());
 	}
 	closedir(d);
+	LOGINFO("    closedir, %s\n", (std::to_string(mill())).c_str());
 	return dusize;
 }
 

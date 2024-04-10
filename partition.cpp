@@ -75,8 +75,6 @@ extern "C" {
 #include <sparse_format.h>
 #include "progresstracking.hpp"
 
-#include <chrono>
-
 #define CRYPT_FOOTER_OFFSET 0x4000
 
 using namespace std;
@@ -3041,13 +3039,6 @@ bool TWPartition::Restore_Image(PartitionSettings *part_settings) {
 	return true;
 }
 
-uint64_t TWPartition::millis() {
-    uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(
-            std::chrono::high_resolution_clock::now().time_since_epoch())
-            .count();
-    return ms; 
-}
-
 bool TWPartition::Update_Size(bool Display_Error) {
 	bool ret = false, Was_Already_Mounted = false, ro = false;
 
@@ -3076,7 +3067,6 @@ bool TWPartition::Update_Size(bool Display_Error) {
 	} else if (!Mount(Display_Error))
 		goto fail;
 
-
 	ret = Get_Size_Via_statfs(Display_Error);
 	if (!ret || Size == 0) {
 		if (!Get_Size_Via_df(Display_Error)) {
@@ -3088,14 +3078,11 @@ bool TWPartition::Update_Size(bool Display_Error) {
 
 	if (Has_Data_Media) {
 		if (Mount(Display_Error)) {
-			LOGINFO("  Mount,  %s\n", (std::to_string(millis())).c_str());
 			Used = backup_exclusions.Get_Folder_Size(Mount_Point);
-			LOGINFO("  Get_Folder_Size,  %s\n", (std::to_string(millis())).c_str());
 			Backup_Size = Used;
 			int bak = (int)(Used / 1048576LLU);
 			int fre = (int)(Free / 1048576LLU);
 			LOGINFO("Data backup size is %iMB, free: %iMB.\n", bak, fre);
-			LOGINFO("    done, %s\n", (std::to_string(millis())).c_str());
 		} else {
 			if (!Was_Already_Mounted)
 				UnMount(false);

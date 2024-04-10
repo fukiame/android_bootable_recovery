@@ -3086,12 +3086,11 @@ bool TWPartition::Update_Size(bool Display_Error) {
 		}
 	}
 
-	LOGINFO("Update_Size data part, currently at %s\n", (std::to_string(millis())).c_str());
 	if (Has_Data_Media) {
-		LOGINFO("  Has_Data_Media,  %s\n", (std::to_string(millis())).c_str());
 		if (Mount(Display_Error)) {
 			LOGINFO("  Mount,  %s\n", (std::to_string(millis())).c_str());
 			Used = backup_exclusions.Get_Folder_Size(Mount_Point);
+			LOGINFO("  Get_Folder_Size,  %s\n", (std::to_string(millis())).c_str());
 			Backup_Size = Used;
 			int bak = (int)(Used / 1048576LLU);
 			int fre = (int)(Free / 1048576LLU);
@@ -3115,11 +3114,9 @@ bool TWPartition::Update_Size(bool Display_Error) {
 		UnMount(false);
 success:
 	Mount_Read_Only = ro;
-	LOGINFO("done, success, %s\n", (std::to_string(millis())).c_str());
 	return true;
 fail:
 	Mount_Read_Only = ro;
-	LOGINFO("done, fail, %s\n", (std::to_string(millis())).c_str());
 	return false;
 }
 
